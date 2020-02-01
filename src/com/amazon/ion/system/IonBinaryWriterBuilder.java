@@ -125,6 +125,8 @@ public abstract class IonBinaryWriterBuilder
     //=========================================================================
 
 
+    public abstract void enableLSTAppend();
+
     /**
      * Gets the symbol table to use for encoded data.
      * To avoid conflicts between different data streams, if the given instance

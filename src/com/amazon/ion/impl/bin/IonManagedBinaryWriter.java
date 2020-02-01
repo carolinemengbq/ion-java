@@ -368,7 +368,7 @@ import java.util.Map;
                     // since we don't know what's coming after (i.e. new local symbols)
                     self.user.truncate(self.userSymbolTablePosition);
 
-                    if (self.isUserLSTAppend)
+                    if (self.lstAppend && self.isUserLSTAppend)
                     {
                         self.flush();
                     }
@@ -660,6 +660,7 @@ import java.util.Map;
     private final List<String>                  userSymbols;
     private final ImportDescriptor              userCurrentImport;
     private boolean                             isUserLSTAppend;
+    private boolean                             lstAppend;
 
     private boolean                             closed;
 
@@ -705,6 +706,7 @@ import java.util.Map;
         this.userSymbols = new ArrayList<String>();
         this.userCurrentImport = new ImportDescriptor();
         this.isUserLSTAppend = false;
+        this.lstAppend = builder.lstAppend;
 
         // TODO decide if initial LST should survive finish() and seed the next LST
         final SymbolTable lst = builder.initialSymbolTable;
@@ -766,16 +768,16 @@ import java.util.Map;
     private void startLocalSymbolTableIfNeeded(final boolean writeIVM) throws IOException
     {
         boolean isAppend = symbolState == SymbolState.LOCAL_SYMBOLS_FLUSHED;
-        if (symbolState == SymbolState.SYSTEM_SYMBOLS || isAppend)
+        if (symbolState == SymbolState.SYSTEM_SYMBOLS || (lstAppend && isAppend))
         {
-            if (writeIVM && !isAppend)
+            if (writeIVM && !(lstAppend && isAppend))
             {
                 symbols.writeIonVersionMarker();
             }
             symbols.addTypeAnnotationSymbol(systemSymbol(ION_SYMBOL_TABLE_SID));
             symbols.stepIn(STRUCT);
             {
-                if (isAppend)
+                if ((lstAppend && isAppend))
                 {
                     symbols.setFieldNameSymbol(systemSymbol(IMPORTS_SID));
                     symbols.writeSymbolToken(systemSymbol(ION_SYMBOL_TABLE_SID));

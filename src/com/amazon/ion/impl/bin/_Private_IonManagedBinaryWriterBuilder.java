@@ -78,6 +78,7 @@ public final class _Private_IonManagedBinaryWriterBuilder
     /*package*/ volatile WriteValueOptimization optimization;
     /*package*/ volatile SymbolTable            initialSymbolTable;
     /*package*/ volatile boolean                isFloatBinary32Enabled;
+    /*package*/ volatile boolean                lstAppend;
 
     private _Private_IonManagedBinaryWriterBuilder(final BlockAllocatorProvider provider)
     {
@@ -111,6 +112,10 @@ public final class _Private_IonManagedBinaryWriterBuilder
 
     // Parameter Setting Methods
 
+    public _Private_IonManagedBinaryWriterBuilder enableLSTAppend() {
+        lstAppend = true;
+        return this;
+    }
     public _Private_IonManagedBinaryWriterBuilder withSymbolsBlockSize(final int blockSize)
     {
         if (blockSize < 1)

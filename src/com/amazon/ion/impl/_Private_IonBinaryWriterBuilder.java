@@ -236,6 +236,11 @@ public class _Private_IonBinaryWriterBuilder
         myBinaryWriterBuilder.withCatalog(catalog);
     }
 
+    public void enableLSTAppend()
+    {
+        myBinaryWriterBuilder.enableLSTAppend();
+    }
+
     @Override
     public void setStreamCopyOptimized(final boolean optimized)
     {
